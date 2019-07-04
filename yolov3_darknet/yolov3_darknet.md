@@ -52,3 +52,7 @@ https://github.com/Jeffer-hua/network-train-function/blob/master/yolov3_darknet/
 python3 make_main_txt.py
 
 ```
+- 修改voc_label.py
+```
+python3 voc_label.py
+```
