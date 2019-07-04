@@ -33,3 +33,22 @@ wget https://pjreddie.com/media/files/yolov3.weights
 ./darknet detect cfg/yolov3.cfg yolov3.weights data/dog.jpg
 ```
 ![image](https://github.com/Jeffer-hua/network-train-function/blob/master/yolov3_darknet/img_1.png)
+
+4.生成darknet训练要求数据集
+
+- 整理VOC格式数据集
+```
+mkdir cv_train
+cp script/voc_label.py cv_train/.
+cp -r VOCdevkit cv_train/.
+```
+- xml转txt
+```
+wget 
+https://github.com/Jeffer-hua/network-train-function/blob/master/yolov3_darknet/make_main_txt.py 
+修改测试集合验证集的百分比
+# trainval_percent=0.9 训练集加验证集百分比
+#train_percent=0.8 训练集加验证集中训练集的百分比
+python3 make_main_txt.py
+
+```
