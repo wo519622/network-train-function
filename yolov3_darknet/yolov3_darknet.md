@@ -13,7 +13,7 @@ cp Makefile Makefile.org
 vim Makefile
 ```
 - 修改五处地方（GPU）
-
+![image](https://github.com/Jeffer-hua/network-train-function/blob/master/yolov3_darknet/img_2.png)
 
 - 编译源文件
 ```
@@ -32,3 +32,4 @@ wget https://pjreddie.com/media/files/yolov3.weights
 ```
 ./darknet detect cfg/yolov3.cfg yolov3.weights data/dog.jpg
 ```
+![image](https://github.com/Jeffer-hua/network-train-function/blob/master/yolov3_darknet/img_1.png)
