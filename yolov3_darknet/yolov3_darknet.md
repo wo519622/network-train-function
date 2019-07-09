@@ -61,7 +61,7 @@ python3 voc_label.py
 ![image](https://github.com/Jeffer-hua/network-train-function/blob/master/yolov3_darknet/img_4.png)
 
 5.修改训练文件
-- 修改data中的voc.names
+- 修改data中的voc.names,注意与voc_label.py的label一样的顺序
 ```
 cp data/voc.names cv_train/.
 gedit cv_train/voc.names
