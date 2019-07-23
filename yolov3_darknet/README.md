@@ -97,10 +97,14 @@ wget https://pjreddie.com/media/files/darknet53.conv.74
 ```
 ./darknet detector train cv_train/voc.data cv_train/yolov3-voc.cfg darknet53.conv.74 -gpu 0,1,2,3
 ```
+- CPU训练
+```
+./darknet -nogpu detector train cv_train/voc.data cv_train/yolov3-voc.cfg darknet53.conv.74
+```
 
 8.测试模型
 - 单张图片测试
 ```
-#注意将yolov3-voc.cfg里面的batch和subdivisions设为1
+#注意将yolov3-voc.cfg里面的batch和subdivisions设为1 (只显示框好后的图片和类别、置信率)
 ./darknet detector test cv_train/voc.data cv_train/yolov3-voc.cfg cv_train/backup/yolov3-voc_xxx.weights image.jpg
 ```
