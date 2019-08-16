@@ -108,3 +108,17 @@ wget https://pjreddie.com/media/files/darknet53.conv.74
 #注意将yolov3-voc.cfg里面的batch和subdivisions设为1 (只显示框好后的图片和类别、置信率)
 ./darknet detector test cv_train/voc.data cv_train/yolov3-voc.cfg cv_train/backup/yolov3-voc_xxx.weights image.jpg
 ```
+- 多张图片测试
+```
+# 修改./examples/detector.c
+cp ./examples/detector.c ./example/detector.c.org
+wget https://github.com/Jeffer-hua/network-train-function/blob/master/yolov3_darknet/detector.c
+vim ./examples/detector.c
+# 根据文中注释将三处改为自己的路劲
+# 重新编译
+make
+./darknet detector test cv_train/voc.data cv_train/yolov3-voc.cfg cv_train/backup/yolov3-voc_xxx.weights
+# Enter Image Path : 输入测试txt，eg: ./cv_train/2007_test.txt
+# 结果会保存在 ./data/test_out
+
+```
