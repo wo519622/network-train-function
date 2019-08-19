@@ -34,6 +34,6 @@ protoc object_detection/protos/*.proto --python_out=.
 - 测试安装
 ```
 python3 object_detection/builders/model_builder_test.py
-# 
+# 返回ok则success
 ```
 
