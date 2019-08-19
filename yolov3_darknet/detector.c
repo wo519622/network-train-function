@@ -633,9 +633,9 @@ void test_detector(char *datacfg, char *cfgfile, char *weightfile, char *filenam
             char **paths = (char **)list_to_array(plist);
             printf("Start Testing!\n");
             int m = plist->size;
-            if(access("/opt/jeff_train/darknet/data/outv3tiny_dpj",0)==-1)//"/home/learner/darknet/data"修改成自己的路径
+            if(access("/opt/jeff_train/darknet/data/test_out",0)==-1)//"/opt/jeff_train/darknet/data"修改成自己的路径
             {
-                if (mkdir("/opt/jeff_train/darknet/data/outv3tiny_dpj",0777))//"/home/learner/darknet/data"修改成自己的路径
+                if (mkdir("/opt/jeff_train/darknet/data/test_out",0777))//"/opt/jeff_train/darknet/data"修改成自己的路径
                 {
                     printf("creat file bag failed!!!");
                 }
@@ -669,7 +669,7 @@ void test_detector(char *datacfg, char *cfgfile, char *weightfile, char *filenam
                 else{
                     
                     char b[2048];
-                    sprintf(b,"/opt/jeff_train/darknet/data/outv3tiny_dpj/%s",GetFilename(path));//"/home/leaner/darknet/data"修改成自己的路径
+                    sprintf(b,"/opt/jeff_train/darknet/data/test_out/%s",GetFilename(path));//"/opt/jeff_train/darknet/data"修改成自己的路径
                     
                     save_image(im, b);
                     printf("save %s successfully!\n",GetFilename(path));
