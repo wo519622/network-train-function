@@ -36,4 +36,6 @@ protoc object_detection/protos/*.proto --python_out=.
 python3 object_detection/builders/model_builder_test.py
 # 返回ok则success
 ```
-
+3.tfrecord数据生成
+- VOC格式数据生成
+- 
