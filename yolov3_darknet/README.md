@@ -13,7 +13,7 @@ cp Makefile Makefile.org
 vim Makefile
 ```
 - 修改五处地方（GPU）
-![image](https://github.com/Jeffer-hua/network-train-function/blob/master/yolov3_darknet/img_2.png)
+![image](https://github.com/Jeffer-hua/network-train-function/blob/master/yolov3_darknet/img/img_2.png)
 
 - 编译源文件
 ```
@@ -32,7 +32,7 @@ wget https://pjreddie.com/media/files/yolov3.weights
 ```
 ./darknet detect cfg/yolov3.cfg yolov3.weights data/dog.jpg
 ```
-![image](https://github.com/Jeffer-hua/network-train-function/blob/master/yolov3_darknet/img_1.png)
+![image](https://github.com/Jeffer-hua/network-train-function/blob/master/yolov3_darknet/img/img_1.png)
 
 4.生成darknet训练要求数据集
 
@@ -53,12 +53,12 @@ python3 make_main_txt.py
 
 ```
 - 修改voc_label.py
-![image](https://github.com/Jeffer-hua/network-train-function/blob/master/yolov3_darknet/img_3.png)
+![image](https://github.com/Jeffer-hua/network-train-function/blob/master/yolov3_darknet/img/img_3.png)
 ```
 python3 voc_label.py
 ```
 - 查看目录结构
-![image](https://github.com/Jeffer-hua/network-train-function/blob/master/yolov3_darknet/img_4.png)
+![image](https://github.com/Jeffer-hua/network-train-function/blob/master/yolov3_darknet/img/img_4.png)
 
 5.修改训练文件
 - 修改data中的voc.names
@@ -66,20 +66,20 @@ python3 voc_label.py
 cp data/voc.names cv_train/.
 gedit cv_train/voc.names
 ```
-![image](https://github.com/Jeffer-hua/network-train-function/blob/master/yolov3_darknet/img_8.png)
+![image](https://github.com/Jeffer-hua/network-train-function/blob/master/yolov3_darknet/img/img_8.png)
 - 修改cfg中的voc.data
 ```
 cp cfg/voc.data cv_train/.
 gedit cv_train/ voc.data
 ```
-![image](https://github.com/Jeffer-hua/network-train-function/blob/master/yolov3_darknet/img_6.png)
+![image](https://github.com/Jeffer-hua/network-train-function/blob/master/yolov3_darknet/img/img_6.png)
 - 修改cfg中的yolov3-voc.cfg
 ```
 cp cfg/yolov3-voc.cfg cv_train/.
 gedit cv_train/ yolov3-voc.cfg
 ```
-![image](https://github.com/Jeffer-hua/network-train-function/blob/master/yolov3_darknet/img_5.png)
-![image](https://github.com/Jeffer-hua/network-train-function/blob/master/yolov3_darknet/img_7.png)
+![image](https://github.com/Jeffer-hua/network-train-function/blob/master/yolov3_darknet/img/img_5.png)
+![image](https://github.com/Jeffer-hua/network-train-function/blob/master/yolov3_darknet/img/img_7.png)
 
 6.下载draknet卷积层预训练权重
 ```
