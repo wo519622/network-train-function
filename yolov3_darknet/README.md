@@ -97,6 +97,10 @@ wget https://pjreddie.com/media/files/darknet53.conv.74
 ```
 ./darknet detector train cv_train/voc.data cv_train/yolov3-voc.cfg darknet53.conv.74 -gpu 0,1,2,3
 ```
+- checkpoint继续训练
+```
+./darknet detector train cv_train/voc.data cv_train/yolov3-voc.cfg cv_train/back_up/yolov3-voc.backup
+```
 - CPU训练
 ```
 ./darknet -nogpu detector train cv_train/voc.data cv_train/yolov3-voc.cfg darknet53.conv.74
