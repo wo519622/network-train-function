@@ -108,7 +108,6 @@ def read_data_and_evaluate(input_config, eval_config):
 
       record_iterator = tf.python_io.tf_record_iterator(path=input_path)
       data_parser = tf_example_parser.TfExampleDetectionAndGTParser()
-
       for string_record in record_iterator:
         tf.logging.log_every_n(tf.logging.INFO, 'Processed %d images...', 1000,
                                processed_images)
