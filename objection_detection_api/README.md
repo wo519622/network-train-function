@@ -51,7 +51,36 @@ python3 object_detection/dataset_tools/create_pascal_tf_record.py --data_dir=dat
 4.修改训练配置
 - 以faster_rcnn_resnnet50为例子
 ```
-# 下载预训练模型以及配置文件
+# 下载预训练模型以及配置文件到data/pretrained/下
+# 选择合适的预训练模型进行下载
+# https://github.com/tensorflow/models/blob/master/research/object_detection/g3doc/detection_model_zoo.md
+# 根据预训练模型下载相应的配置
+# https://github.com/tensorflow/models/tree/master/research/object_detection/samples/configs
+```
+- 修改配置文档
+```
+cp data/pretrained/faster_rcnn_resnet50_coco.config data/pretrained/faster_rcnn_resnet50_coco.config.org
+vim data/pretrained/faster_rcnn_resnet50_coco.config
+# 修改
+# fine_tune_checkpoint: "data/pretrained/faster_rcnn_resnet50_coco_2018_01_28/model.ckpt"
+
+# train_input_reader: {
+#  tf_record_input_reader {
+#    input_path: "data/train_pascal.record"
+#  }
+#  label_map_path: "data/pascal_label_map.pbtxt"
+#}
+
+# num_examples: 201(修改为自己验证集的数量：wc -l val.txt)
+
+#eval_input_reader: {
+#  tf_record_input_reader {
+#    input_path: "data/val_pascal.record"
+#  }
+#  label_map_path: "data/pascal_label_map.pbtxt"
+#  shuffle: false
+#  num_readers: 1
+#}
 
 ```
 
