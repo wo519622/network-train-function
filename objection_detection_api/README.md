@@ -38,20 +38,34 @@ python3 object_detection/builders/model_builder_test.py
 ```
 3.tfrecord数据生成
 - VOC格式数据生成
+
+- 修改label文件
+```
+mkdir data_voc
+cp data/pascal_label_map.pbtxt data_voc/
+vim data_voc/pascal_label_map.pbtxt
+# 修改为自己的类别
+# item {
+#  id: 1
+#  name: '1'
+# }
+
+```
 - tfrecord数据生成
 ```
 # 训练集
-python3 object_detection/dataset_tools/create_pascal_tf_record.py --data_dir=data/ --year=VOC2007 --set=train --output_path=data/pascal_train.record
+python3 object_detection/dataset_tools/create_pascal_tf_record.py --data_dir=data_voc/ --year=VOC2007 --set=train --output_path=data/pascal_train.record
 # 验证集
-python3 object_detection/dataset_tools/create_pascal_tf_record.py --data_dir=data/ --year=VOC2007 --set=val --output_path=data/pascal_val.record
+python3 object_detection/dataset_tools/create_pascal_tf_record.py --data_dir=data_voc/ --year=VOC2007 --set=val --output_path=data/pascal_val.record
 # 测试集
-python3 object_detection/dataset_tools/create_pascal_tf_record.py --data_dir=data/ --year=VOC2007 --set=test --output_path=data/pascal_test.record
+python3 object_detection/dataset_tools/create_pascal_tf_record.py --data_dir=data_voc/ --year=VOC2007 --set=test --output_path=data/pascal_test.record
 ```
 
 4.修改训练配置
 - 以faster_rcnn_resnnet50为例子
 ```
-# 下载预训练模型以及配置文件到data/pretrained/下
+mkdir data_voc/pretrained
+# 下载预训练模型以及配置文件到data_voc/pretrained/下
 # 选择合适的预训练模型进行下载
 # https://github.com/tensorflow/models/blob/master/research/object_detection/g3doc/detection_model_zoo.md
 # 根据预训练模型下载相应的配置
@@ -59,57 +73,56 @@ python3 object_detection/dataset_tools/create_pascal_tf_record.py --data_dir=dat
 ```
 - 修改配置文档
 ```
-cp data/pretrained/faster_rcnn_resnet50_coco.config data/pretrained/faster_rcnn_resnet50_coco.config.org
-vim data/pretrained/faster_rcnn_resnet50_coco.config
+cp data_voc/pretrained/faster_rcnn_resnet50_coco.config data_voc/pretrained/faster_rcnn_resnet50_coco.config.org
+vim data_voc/pretrained/faster_rcnn_resnet50_coco.config
 # 修改
-# fine_tune_checkpoint: "data/pretrained/faster_rcnn_resnet50_coco_2018_01_28/model.ckpt"
+# fine_tune_checkpoint: "data_voc/pretrained/faster_rcnn_resnet50_coco_2018_01_28/model.ckpt"
 
 # train_input_reader: {
 #  tf_record_input_reader {
-#    input_path: "data/train_pascal.record"
+#    input_path: "data_voc/train_pascal.record"
 #  }
-#  label_map_path: "data/pascal_label_map.pbtxt"
+#  label_map_path: "data_voc/pascal_label_map.pbtxt"
 #}
 
 # num_examples: 201(修改为自己验证集的数量：wc -l val.txt)
 
 #eval_input_reader: {
 #  tf_record_input_reader {
-#    input_path: "data/val_pascal.record"
+#    input_path: "data_voc/val_pascal.record"
 #  }
-#  label_map_path: "data/pascal_label_map.pbtxt"
+#  label_map_path: "data_voc/pascal_label_map.pbtxt"
 #  shuffle: false
 #  num_readers: 1
 #}
 
 ```
-
-
 5.训练
 ```
-python3 object_detection/model_main.py --model_dir=data/checkpoints --pipeline_config_path=data/pretrained/faster_rcnn_resnet50_coco.config
+python3 object_detection/model_main.py --model_dir=data_voc/checkpoints --pipeline_config_path=data_voc/pretrained/faster_rcnn_resnet50_coco.config
 ```
 6.模型转换
 ```
-python3 object_detection/export_inference_graph.py  --input_type image_tensor --pipeline_config_path=data/pretrained/faster_rcnn_resnet50_coco.config --trained_checkpoint_prefix=data/checkpoints/model.ckpt-x --output_directory=data/out_pb
+mkdir data_voc/out_pb
+python3 object_detection/export_inference_graph.py  --input_type image_tensor --pipeline_config_path=data_voc/pretrained/faster_rcnn_resnet50_coco.config --trained_checkpoint_prefix=data_voc/checkpoints/model.ckpt-x --output_directory=data_voc/out_pb
 ```
 7.测试
 - 生成计算mAPtfrecord
 ```
-python3 object_detection/inference/infer_detections.py --input_tfrecord_paths=data/test_pascal.record --output_tfrecord_path=data/test_detections.tfrecord  --inference_graph=data/out_pb/frozen_inference_graph.pb --discard_image_pixels
+python3 object_detection/inference/infer_detections.py --input_tfrecord_paths=data_voc/test_pascal.record --output_tfrecord_path=data_voc/test_detections.tfrecord  --inference_graph=data_voc/out_pb/frozen_inference_graph.pb --discard_image_pixels
 ```
 - 生成指标相关的配置文件
 ```
-mkdir -p data/test_eval_metrics
+mkdir -p data_voc/test_eval_metrics
 vim test_eval_config.pbtxt
 # 写入 
 # metrics_set: 'coco_detection_metrics'
 vim test_input_config.pbtxt
 # 写入 
-# label_map_path: 'data/pascal_label_map.pbtxt'
-# tf_record_input_reader: { input_path: 'data/test_detections.tfrecord@1' }
+# label_map_path: 'data_voc/pascal_label_map.pbtxt'
+# tf_record_input_reader: { input_path: 'data_voc/test_detections.tfrecord@1' }
 ```
 - 计算mAP
 ```
-python3 object_detection/metrics/offline_eval_map_corloc.py --eval_dir=data/test_eval_metrics --eval_config_path=data/test_eval_metrics/test_eval_config.pbtxt --input_config_path=data/test_eval_metrics/test_input_config.pbtxt
+python3 object_detection/metrics/offline_eval_map_corloc.py --eval_dir=data_voc/test_eval_metrics --eval_config_path=data_voc/test_eval_metrics/test_eval_config.pbtxt --input_config_path=data_voc/test_eval_metrics/test_input_config.pbtxt
 ```
