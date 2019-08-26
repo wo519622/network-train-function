@@ -38,4 +38,18 @@ python3 object_detection/builders/model_builder_test.py
 ```
 3.tfrecord数据生成
 - VOC格式数据生成
-- 
+- tfrecord数据生成
+
+4.训练
+```
+python3 
+```
+
+5.测试
+
+
+6.模型转换
+```
+python3 object_detection/export_inference_graph.py  --input_type image_tensor --pipeline_config_path =data/pretrained/faster_rcnn_resnet50_coco.config --trained_checkpoint_prefix=data/checkpoints/model.ckpt-x --output_directory=data/out_pb
+```
+
