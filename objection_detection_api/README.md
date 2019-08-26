@@ -39,6 +39,14 @@ python3 object_detection/builders/model_builder_test.py
 3.tfrecord数据生成
 - VOC格式数据生成
 - tfrecord数据生成
+```
+# 训练集
+python3 object_detection/dataset_tools/create_pascal_tf_record.py --data_dir=data/ --year=VOC2007 --set=train --output_path=data/pascal_train.record
+# 验证集
+python3 object_detection/dataset_tools/create_pascal_tf_record.py --data_dir=data/ --year=VOC2007 --set=val --output_path=data/pascal_val.record
+# 测试集
+python3 object_detection/dataset_tools/create_pascal_tf_record.py --data_dir=data/ --year=VOC2007 --set=test --output_path=data/pascal_test.record
+```
 
 4.训练
 ```
@@ -50,6 +58,6 @@ python3
 
 6.模型转换
 ```
-python3 object_detection/export_inference_graph.py  --input_type image_tensor --pipeline_config_path =data/pretrained/faster_rcnn_resnet50_coco.config --trained_checkpoint_prefix=data/checkpoints/model.ckpt-x --output_directory=data/out_pb
+python3 object_detection/export_inference_graph.py  --input_type image_tensor --pipeline_config_path=data/pretrained/faster_rcnn_resnet50_coco.config --trained_checkpoint_prefix=data/checkpoints/model.ckpt-x --output_directory=data/out_pb
 ```
 
