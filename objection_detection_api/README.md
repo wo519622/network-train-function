@@ -54,11 +54,27 @@ python3 object_detection/dataset_tools/create_pascal_tf_record.py --data_dir=dat
 ```
 python3 object_detection/model_main.py --model_dir=data/checkpoints --pipeline_config_path=data/pretrained/faster_rcnn_resnet50_coco.config
 ```
-6.测试
-
-
-7.模型转换
+6.模型转换
 ```
 python3 object_detection/export_inference_graph.py  --input_type image_tensor --pipeline_config_path=data/pretrained/faster_rcnn_resnet50_coco.config --trained_checkpoint_prefix=data/checkpoints/model.ckpt-x --output_directory=data/out_pb
 ```
-
+7.测试
+- 生成计算mAPtfrecord
+```
+python3 object_detection/inference/infer_detections.py --input_tfrecord_paths=data/test_pascal.record --output_tfrecord_path=data/test_detections.tfrecord  --inference_graph=data/out_pb/frozen_inference_graph.pb --discard_image_pixels
+```
+- 生成指标相关的配置文件
+```
+mkdir -p data/test_eval_metrics
+vim test_eval_config.pbtxt
+# 写入 
+# metrics_set: 'coco_detection_metrics'
+vim test_input_config.pbtxt
+# 写入 
+# label_map_path: 'data/pascal_label_map.pbtxt'
+# tf_record_input_reader: { input_path: 'data/test_detections.tfrecord@1' }
+```
+- 计算mAP
+```
+python3 object_detection/metrics/offline_eval_map_corloc.py --eval_dir=data/test_eval_metrics --eval_config_path=data/test_eval_metrics/test_eval_config.pbtxt --input_config_path=data/test_eval_metrics/test_input_config.pbtxt
+```
