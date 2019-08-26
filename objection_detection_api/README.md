@@ -48,7 +48,13 @@ python3 object_detection/dataset_tools/create_pascal_tf_record.py --data_dir=dat
 python3 object_detection/dataset_tools/create_pascal_tf_record.py --data_dir=data/ --year=VOC2007 --set=test --output_path=data/pascal_test.record
 ```
 
-4.修改配置
+4.修改训练配置
+- 以faster_rcnn_resnnet50为例子
+```
+# 下载预训练模型以及配置文件
+
+```
+
 
 5.训练
 ```
