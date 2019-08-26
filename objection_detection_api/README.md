@@ -48,15 +48,16 @@ python3 object_detection/dataset_tools/create_pascal_tf_record.py --data_dir=dat
 python3 object_detection/dataset_tools/create_pascal_tf_record.py --data_dir=data/ --year=VOC2007 --set=test --output_path=data/pascal_test.record
 ```
 
-4.训练
+4.修改配置
+
+5.训练
 ```
-python3 
+python3 object_detection/model_main.py --model_dir=data/checkpoints --pipeline_config_path=data/pretrained/faster_rcnn_resnet50_coco.config
 ```
+6.测试
 
-5.测试
 
-
-6.模型转换
+7.模型转换
 ```
 python3 object_detection/export_inference_graph.py  --input_type image_tensor --pipeline_config_path=data/pretrained/faster_rcnn_resnet50_coco.config --trained_checkpoint_prefix=data/checkpoints/model.ckpt-x --output_directory=data/out_pb
 ```
