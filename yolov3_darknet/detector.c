@@ -3,6 +3,8 @@
 #include <fcntl.h>   /* open(), creat() - and fcntl() */
 #include<sys/types.h>  //需增加的头文件
 #include<sys/types.h>  //需增加的头文件
+#include<sys/stat.h>
+
 
 static int coco_ids[] = {1,2,3,4,5,6,7,8,9,10,11,13,14,15,16,17,18,19,20,21,22,23,24,25,27,28,31,32,33,34,35,36,37,38,39,40,41,42,43,44,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64,65,67,70,72,73,74,75,76,77,78,79,80,81,82,84,85,86,87,88,89,90};
 
@@ -11,6 +13,7 @@ char *GetFilename(char *p)
     static char name[50]={""};
     char *q = strrchr(p,'/') + 1;
     strncpy(name,q,50);
+
     return name;
 }
 
@@ -569,6 +572,84 @@ void validate_detector_recall(char *cfgfile, char *weightfile)
     }
 }
 
+// char **split(const char *source, char flag)
+// {
+//     char **pt;
+//     int j, n = 0;
+//     int count = 1;
+//     int len = strlen(source);
+//     char tmp[len + 1];
+//     tmp[0] = '\0';
+
+//     for (int i = 0; i < len; ++i)
+//     {
+//         if (source[i] == flag && source[i+1] == '\0')
+//             continue;
+//         else if (source[i] == flag && source[i+1] != flag)
+//             count++;
+//     }
+//     // 多分配一个char*，是为了设置结束标志
+//     pt = (char**)malloc((count+1) * sizeof(char*));
+
+//     count = 0;
+//     for (int i = 0; i < len; ++i)
+//     {
+//         if (i == len - 1 && source[i] != flag)
+//         {
+//             tmp[n++] = source[i];
+//             tmp[n] = '\0';  // 字符串末尾添加空字符
+//             j = strlen(tmp) + 1;
+//             pt[count] = (char*)malloc(j * sizeof(char));
+//             strcpy(pt[count++], tmp);
+//         }
+//         else if (source[i] == flag)
+//         {
+//             j = strlen(tmp);
+//             if (j != 0)
+//             {
+//                 tmp[n] = '\0';  // 字符串末尾添加空字符
+//                 pt[count] = (char*)malloc((j+1) * sizeof(char));
+//                 strcpy(pt[count++], tmp);
+//                 // 重置tmp
+//                 n = 0;
+//                 tmp[0] = '\0';
+//             }
+//         }
+//         else
+//             tmp[n++] = source[i];
+//     }
+//     // 设置结束标志
+//     pt[count] = NULL;
+
+//     return pt;
+// }
+
+// 去除文件名后缀,darknet生成图片方式为自带后缀
+char* getFile(char *fullname)
+{
+   int from,to,i;
+
+   char *newstr=malloc(sizeof(newstr));
+   char *temp;
+   if(fullname!=NULL)
+   {
+      if((temp=strchr(fullname,'.'))==NULL)//if not find dot
+         newstr = fullname;
+      else
+      {
+         from = strlen(fullname) - 1;
+         to = (temp-fullname);  //the first dot's index;
+         for(i=from;i<=to;i--)
+            if(fullname[i]=='.')break;//find the last dot
+         newstr = (char*)malloc(i+1);
+         strncpy(newstr,fullname,i);
+         *(newstr+i)=0;
+      }
+   }
+   return newstr;
+}
+
+
 void test_detector(char *datacfg, char *cfgfile, char *weightfile, char *filename, float thresh, float hier_thresh, char *outfile, int fullscreen)
 {
     list *options = read_data_cfg(datacfg);
@@ -633,9 +714,9 @@ void test_detector(char *datacfg, char *cfgfile, char *weightfile, char *filenam
             char **paths = (char **)list_to_array(plist);
             printf("Start Testing!\n");
             int m = plist->size;
-            if(access("/opt/jeff_train/darknet/data/test_out",0)==-1)//"/opt/jeff_train/darknet/data"修改成自己的路径
+            if(access("/opt/jeff_train/darknet/data/outdata",0)==-1)//"/home/learner/darknet/data"修改成自己的路径
             {
-                if (mkdir("/opt/jeff_train/darknet/data/test_out",0777))//"/opt/jeff_train/darknet/data"修改成自己的路径
+                if (mkdir("/opt/jeff_train/darknet/data/outdata",0777))//"/home/learner/darknet/data"修改成自己的路径
                 {
                     printf("creat file bag failed!!!");
                 }
@@ -669,9 +750,9 @@ void test_detector(char *datacfg, char *cfgfile, char *weightfile, char *filenam
                 else{
                     
                     char b[2048];
-                    sprintf(b,"/opt/jeff_train/darknet/data/test_out/%s",GetFilename(path));//"/opt/jeff_train/darknet/data"修改成自己的路径
-                    
-                    save_image(im, b);
+                    sprintf(b,"/opt/jeff_train/darknet/data/outdata/%s",GetFilename(path));//"/home/leaner/darknet/data"修改成自己的路径
+                    char *b1 = getFile(b);
+                    save_image(im, b1);
                     printf("save %s successfully!\n",GetFilename(path));
                     /*
                     #ifdef OPENCV
