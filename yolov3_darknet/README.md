@@ -124,25 +124,24 @@ make
 ```
 ---
 ##### 9. 计算mAP，Recall
-- 生成预测结果
-1.py2(弃用)
+- 计算voc-mAP,生成预测结果
 ```bash
 ./darknet detector valid cv_train/voc.data cv_train/yolov3-voc.cfg cv_train/backup/yolov3-voc_xxxx.weights
 # 结果会以comp4_det_test_[类名].txt保存在./result中
-mv comp4_det_test_[类名].txt [类名].txt
-# 将生成的预测结果文件名重命名
 ```
-- 计算mAP
+1.py2(弃用)
 ```bash
 # 目前是采用py-faster-rcnn下的voc_eval.py计算mAP,
 # 下载compute_map_py2
+mv comp4_det_test_[类名].txt [类名].txt
+# 将生成的预测结果文件名重命名
 cd compute_map_py2
 vim compute_mAP.py
 # 将darknet_path修改为自己的路劲
 python compute_mAP.py
-
+```
 2.py3
-./darknet detector valid cv_train/voc.data cv_train/yolov3-voc.cfg cv_train/backup/yolov3-voc_xxxx.weights
+```
 # 下载compute_map_py3
 cd compute_map_py3
 vim eval_voc.py
