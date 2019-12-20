@@ -111,7 +111,7 @@ wget https://pjreddie.com/media/files/darknet53.conv.74
 - 多张图片测试
 ```bash
 # 修改./examples/detector.c
-cp ./examples/detector.c ./example/detector.c.org
+cp ./examples/detector.c ./examples/detector.c.org
 wget https://github.com/Jeffer-hua/network-train-function/blob/master/yolov3_darknet/detector.c
 vim ./examples/detector.c
 # 根据文中注释将三处改为自己的路劲
@@ -125,8 +125,9 @@ make
 ---
 ##### 9. 计算mAP，Recall
 - 生成预测结果
+1.py2(弃用)
 ```bash
-./darknet detector valid cv_train/voc.data cv_train/yolov3-voc.cfg cv_train/backup/yolov3-voc_xxxx.weights -thresh .5
+./darknet detector valid cv_train/voc.data cv_train/yolov3-voc.cfg cv_train/backup/yolov3-voc_xxxx.weights
 # 结果会以comp4_det_test_[类名].txt保存在./result中
 mv comp4_det_test_[类名].txt [类名].txt
 # 将生成的预测结果文件名重命名
@@ -139,5 +140,13 @@ cd compute_map_py2
 vim compute_mAP.py
 # 将darknet_path修改为自己的路劲
 python compute_mAP.py
+
+2.py3
+./darknet detector valid cv_train/voc.data cv_train/yolov3-voc.cfg cv_train/backup/yolov3-voc_xxxx.weights
+# 下载compute_map_py3
+cd compute_map_py3
+vim eval_voc.py
+# 将classes修改为自己的类别
+python3 eval_voc.py --help 
 ```
 ---
