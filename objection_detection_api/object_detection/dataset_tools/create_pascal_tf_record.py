@@ -56,7 +56,7 @@ SETS = ['train', 'val', 'trainval', 'test']
 YEARS = ['VOC2007', 'VOC2012', 'merged']
 
 
-def dict_to_tf_example(data,
+def dict_to_tf_example(data,year,
                        dataset_directory,
                        label_map_dict,
                        ignore_difficult_instances=False,
@@ -82,7 +82,7 @@ def dict_to_tf_example(data,
   Raises:
     ValueError: if the image pointed to by data['filename'] is not a valid JPEG
   """
-  img_path = os.path.join(data['folder'], image_subdirectory, data['filename'])
+  img_path = os.path.join(year, image_subdirectory, data['filename'])
   full_path = os.path.join(dataset_directory, img_path)
   with tf.gfile.GFile(full_path, 'rb') as fid:
     encoded_jpg = fid.read()
@@ -170,10 +170,10 @@ def main(_):
       path = os.path.join(annotations_dir, example + '.xml')
       with tf.gfile.GFile(path, 'r') as fid:
         xml_str = fid.read()
-      xml = etree.fromstring(xml_str)
+      xml = etree.fromstring(xml_str).encode('utf-8')
       data = dataset_util.recursive_parse_xml_to_dict(xml)['annotation']
 
-      tf_example = dict_to_tf_example(data, FLAGS.data_dir, label_map_dict,
+      tf_example = dict_to_tf_example(data,year, FLAGS.data_dir, label_map_dict,
                                       FLAGS.ignore_difficult_instances)
       writer.write(tf_example.SerializeToString())
 
