@@ -1,5 +1,6 @@
 #### 使用谷歌目标检测API快速训练目标检测模型
 - environment : Tensorflow 1.9,ubuntu18.04
+- 注意使用的是Tensorflow1.9版本下的objection detecte api训练,相应修改在modify.md中给出
 
 1.安装
 >官方有给出安装help:https://github.com/tensorflow/models/blob/master/research/object_detection/g3doc/installation.md
